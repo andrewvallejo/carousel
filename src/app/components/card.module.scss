@@ -1,0 +1,8 @@
+@import "../styles";
+
+.card {
+  @include flex;
+  width: 12.5rem;
+  height: 6.25rem;
+  background: blue;
+}
