@@ -1,4 +1,8 @@
+@import "../styles.scss";
+
 .wheel {
+  @include flex;
+  position: relative;
   width: 18.75rem;
   height: 18.75rem;
   background: red;
