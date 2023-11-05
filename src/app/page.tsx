@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.scss";
-import Card from "./components/Card";
+import Type from "./components/Type";
 import Wheel from "./components/Wheel";
 
 export default function Home() {
