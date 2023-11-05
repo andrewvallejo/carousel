@@ -14,10 +14,10 @@ interface ElementCenter {
  * @returns An object containing the x and y coordinates of the center of the element.
  */
 export const getCenterOfElement = (element: HTMLElement): ElementCenter => {
-  const computedStyle = getComputedStyle(element);
+  const { width, height } = element.getBoundingClientRect();
 
-  const x = element.offsetLeft + element.offsetWidth / 2;
-  const y = element.offsetTop + element.offsetHeight / 2;
+  const x = width / 2;
+  const y = height / 2;
 
   return { x, y };
 };
@@ -29,12 +29,26 @@ export const getCenterOfElement = (element: HTMLElement): ElementCenter => {
  * @returns An object containing the x and y coordinates of the point.
  */
 export const getCoordinates = (theta: number, radius: number) => {
-  const xCoordinates = Math.cos(theta) * radius;
-  const yCoordinates = Math.sin(theta) * radius;
-  return {
-    x: convertPxToRem(xCoordinates),
-    y: convertPxToRem(yCoordinates),
+  const coordinates = {
+    x: Math.cos(theta) * radius,
+    y: Math.sin(theta) * radius,
   };
+
+  return {
+    x: coordinates.x,
+    y: coordinates.y,
+  };
+};
+
+/**
+ * Multiplies a number by PI/4.
+ * @param index - The number to be multiplied by PI/4.
+ * @returns The result of the multiplication.
+ */
+export const multiplyByPi = (index: number) => {
+  const results = (Math.PI / 4) * index;
+
+  return results;
 };
 
 /**
@@ -42,7 +56,15 @@ export const getCoordinates = (theta: number, radius: number) => {
  * @param px - The number of pixels to convert.
  * @returns The converted value in rems.
  */
-export const convertPxToRem = (px: number): string => {
-  const rem = px / 16 || 0;
-  return `${rem}rem`;
+export const convertPxToRem = (px: number) => {
+  const rem = px / 16;
+
+  return rem;
 };
+
+/**
+ * Returns a string with the value in rems.
+ * @param px - The number of pixels to convert.
+ * @returns The converted value in rems as a string.
+ */
+export const getRem = (px: number) => `${convertPxToRem(px)}rem`;
