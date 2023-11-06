@@ -41,14 +41,15 @@ export const getCoordinates = (theta: number, radius: number) => {
 };
 
 /**
- * Multiplies a number by PI/4.
- * @param index - The number to be multiplied by PI/4.
+ * Multiplies a number by PI divided by a given ratio.
+ * @param index - The number to be multiplied by PI divided by the given ratio.
+ * @param ratio - The ratio to divide PI by. Default value is 9.
  * @returns The result of the multiplication.
  */
-export const multiplyByPi = (index: number) => {
-  const results = (Math.PI / 4) * index;
+export const multiplyByPi = (index: number, ratio = 9): number => {
+  const result = (Math.PI / ratio) * index;
 
-  return results;
+  return result;
 };
 
 /**
