@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import { getCoordinates, getRem } from "utility/math";
+import { getCoordinates, getRem } from "utility";
 
 import styles from "./Type.module.scss";
 
-export default function Type({ type, center, radius, theta }) {
+export function Type({ type, center, radius, theta }) {
   const { x, y } = getCoordinates(theta, radius);
 
   const left = getRem(center.x + x);

@@ -1,27 +1,40 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 
-import Type from "./Type";
+import { Type } from "components";
 
-import { getCenterOfElement, multiplyByPi } from "utility/math";
-import pokemonTypes from "utility/types";
+import { getCenterOfElement, multiplyByPi, pokemonTypes } from "utility";
 
 import styles from "./Wheel.module.scss";
 
-interface WheelProps {
-  Types: any[];
-}
-
-const initialWheel = {
+/** The initial state of the wheel */
+const initialWheel: {
+  /** The radius of the wheel. */
+  radius: number;
+  /** The center point of the wheel. */
+  center: { x: number; y: number };
+  /** The angle of the wheel. */
+  theta: number;
+  /** The ID of the animation. */
+  animationId: number | null;
+} = {
   radius: 250,
   center: { x: 0, y: 0 },
   theta: 0,
   animationId: null,
 };
 
-export default function Wheel() {
+/**
+ * Renders a wheel component that displays a list of Pokemon types.
+ * @returns {JSX.Element} The Wheel component.
+ */
+export function Wheel() {
   const [wheel, setWheel] = useState(initialWheel);
-  const wheelRef = useRef(null);
 
+  const wheelRef = useRef();
+
+  /**
+   * Updates the center of the wheel when the component mounts or the wheelRef changes.
+   */
   useEffect(() => {
     if (wheelRef.current) {
       const centerOfWheel = getCenterOfElement(wheelRef.current);
@@ -29,25 +42,31 @@ export default function Wheel() {
     }
   }, [wheelRef]);
 
+  /**
+   * Rotates the wheel when the theta value changes.
+   */
   useEffect(() => {
     if (wheelRef.current) {
-      wheelRef.current.style.transform = `rotate(${wheel.theta}deg)`;
+      wheelRef.current.style.setProperty("--rotate-deg", `${wheel.theta}deg`);
     }
   }, [wheel.theta]);
 
-  const handleScroll = (event) => {
-    const wheelTheta = wheel.theta + event.deltaY * 0.07;
+  const handleScroll = useCallback(
+    (event) => {
+      const wheelTheta = wheel.theta + event.deltaY * 0.07;
 
-    if (wheel.animationId) {
-      cancelAnimationFrame(wheel.animationId);
-    }
+      if (wheel.animationId) {
+        cancelAnimationFrame(wheel.animationId);
+      }
 
-    const animationId = requestAnimationFrame(() => {
-      setWheel((prevWheel) => ({ ...prevWheel, theta: wheelTheta }));
-    });
+      const animationId = requestAnimationFrame(() => {
+        setWheel((prevWheel) => ({ ...prevWheel, theta: wheelTheta }));
+      });
 
-    setWheel((prevWheel) => ({ ...prevWheel, animationId }));
-  };
+      setWheel((prevWheel) => ({ ...prevWheel, animationId }));
+    },
+    [wheel]
+  );
 
   return (
     <div onWheel={handleScroll} ref={wheelRef} className={styles.wheel}>
