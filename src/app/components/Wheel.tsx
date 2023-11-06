@@ -38,7 +38,6 @@ const initialWheelState: WheelState = {
 export function Wheel() {
   const [wheel, setWheel] = useState(initialWheelState);
   const [loaded, setLoaded] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
 
   const wheelStateRef = useRef(wheel);
   const wheelRef = useRef(null);
@@ -64,8 +63,6 @@ export function Wheel() {
   }, [wheel.theta]);
 
   const handleScroll = useCallback((event) => {
-    setHasScrolled(true);
-
     clearTimeout(wheelStateRef.current.animationId);
     const scrollSpeed = (event.deltaY / 360) * 20;
     const tempTheta = wheelStateRef.current.tempTheta + scrollSpeed;
@@ -93,7 +90,6 @@ export function Wheel() {
               center={wheel.center}
               radius={wheel.radius}
               theta={multiplyByPi(index)}
-              isLoaded={true}
             />
           );
         })}

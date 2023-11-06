@@ -8,11 +8,6 @@
   position: absolute;
   border-radius: 50%;
   text-align: center;
-  visibility: hidden;
   transform: translate(-50%, -50%);
   font-size: clamp(0.5rem, 0.5vw, 1rem);
-
-  &.loaded {
-    visibility: visible;
-  }
 }

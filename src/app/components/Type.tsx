@@ -35,11 +35,10 @@ export function Type({ type, center, radius, theta, isLoaded }: TypeProps) {
 
   return (
     <div
-      className={`${styles.type} ${isLoaded ? styles.loaded : ""}`}
+      className={styles.type}
       style={{
         ...position,
         transform: `translate(${position.x}px, ${position.y}px) rotate(${rotation}rad)`,
-        opacity: isLoaded ? 1 : 0,
       }}
     >
       <Image
