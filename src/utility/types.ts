@@ -1,4 +1,4 @@
-const pokemonTypes = [
+export const pokemonTypes = [
   "bug",
   "dark",
   "dragon",
@@ -7,16 +7,14 @@ const pokemonTypes = [
   "fighting",
   "fire",
   "flying",
-  // "ghost",
-  // "grass",
-  // "ground",
-  // "ice",
-  // "normal",
-  // "poison",
-  // "psychic",
-  // "rock",
-  // "steel",
-  // "water",
+  "ghost",
+  "grass",
+  "ground",
+  "ice",
+  "normal",
+  "poison",
+  "psychic",
+  "rock",
+  "steel",
+  "water",
 ];
-
-export default pokemonTypes;
