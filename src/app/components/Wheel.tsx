@@ -1,85 +1,102 @@
-import { useEffect, useState, useRef, useCallback } from "react";
-
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { Type } from "components";
-
 import { getCenterOfElement, multiplyByPi, pokemonTypes } from "utility";
 
 import styles from "./Wheel.module.scss";
+import { getRem, getCoordinates } from "../../utility/math";
 
-/** The initial state of the wheel */
-const initialWheel: {
-  /** The radius of the wheel. */
+type WheelState = {
+  /** The radius of the wheel */
   radius: number;
-  /** The center point of the wheel. */
+  /** The center coordinates of the wheel */
   center: { x: number; y: number };
-  /** The angle of the wheel. */
+  /** The current angle of the wheel in degrees */
   theta: number;
-  /** The ID of the animation. */
+  /** The ID of the current animation frame */
   animationId: number | null;
-} = {
+  /** The current rotation of the wheel in degrees */
+  rotation: number;
+  /** The temporary angle of the wheel used during scrolling */
+  tempTheta: number;
+};
+
+const initialWheelState: WheelState = {
   radius: 250,
   center: { x: 0, y: 0 },
   theta: 0,
   animationId: null,
+  rotation: 0,
+  tempTheta: 0,
 };
 
-/**
- * Renders a wheel component that displays a list of Pokemon types.
- * @returns {JSX.Element} The Wheel component.
- */
 export function Wheel() {
-  const [wheel, setWheel] = useState(initialWheel);
+  const [wheel, setWheel] = useState(initialWheelState);
+  const [loaded, setLoaded] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
-  const wheelRef = useRef();
+  const wheelStateRef = useRef(wheel);
+  const wheelRef = useRef(null);
 
-  /**
-   * Updates the center of the wheel when the component mounts or the wheelRef changes.
-   */
   useEffect(() => {
-    if (wheelRef.current) {
-      const centerOfWheel = getCenterOfElement(wheelRef.current);
-      setWheel((prevWheel) => ({ ...prevWheel, center: centerOfWheel }));
-    }
-  }, [wheelRef]);
+    if (!wheelRef.current) return;
+    const { width, height } = wheelRef.current.getBoundingClientRect();
+    const radius = Math.min(width, height) / 2;
+    const center = { x: width / 2, y: height / 2 };
+    setWheel((prevWheel) => ({ ...prevWheel, center, radius }));
+    setLoaded(true);
+  }, []);
 
-  /**
-   * Rotates the wheel when the theta value changes.
-   */
   useEffect(() => {
-    if (wheelRef.current) {
-      wheelRef.current.style.setProperty("--rotate-deg", `${wheel.theta}deg`);
-    }
+    wheelStateRef.current = wheel;
+  }, [wheel]);
+
+  useEffect(() => {
+    if (!wheelRef.current) return;
+    wheelRef.current.style.setProperty("--rotate-deg", `${wheel.theta}deg`);
+    const rotation = (wheel.theta % 360) * -1;
+    setWheel((prevWheel) => ({ ...prevWheel, rotation }));
   }, [wheel.theta]);
 
-  const handleScroll = useCallback(
-    (event) => {
-      const wheelTheta = wheel.theta + event.deltaY * 0.07;
+  const handleScroll = useCallback((event) => {
+    setHasScrolled(true);
 
-      if (wheel.animationId) {
-        cancelAnimationFrame(wheel.animationId);
-      }
-
-      const animationId = requestAnimationFrame(() => {
-        setWheel((prevWheel) => ({ ...prevWheel, theta: wheelTheta }));
-      });
-
-      setWheel((prevWheel) => ({ ...prevWheel, animationId }));
-    },
-    [wheel]
-  );
+    clearTimeout(wheelStateRef.current.animationId);
+    const scrollSpeed = (event.deltaY / 360) * 20;
+    const tempTheta = wheelStateRef.current.tempTheta + scrollSpeed;
+    wheelRef.current.style.setProperty("transform", `rotate(${tempTheta}deg)`);
+    Array.from(wheelRef.current.children).forEach((child) => {
+      child.style.setProperty(
+        "transform",
+        `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`
+      );
+    });
+    const animationId = setTimeout(() => {
+      setWheel((prevWheel) => ({ ...prevWheel, theta: tempTheta }));
+    }, 150);
+    setWheel((prevWheel) => ({ ...prevWheel, animationId, tempTheta }));
+  }, []);
 
   return (
     <div onWheel={handleScroll} ref={wheelRef} className={styles.wheel}>
-      {pokemonTypes.map((type, index) => (
-        <Type
-          key={index}
-          title="Effectiveness Chart"
-          type={type}
-          center={wheel.center}
-          radius={wheel.radius}
-          theta={multiplyByPi(index)}
-        />
-      ))}
+      {loaded &&
+        pokemonTypes.map((type, index) => {
+          return (
+            <Type
+              key={index}
+              type={type}
+              center={wheel.center}
+              radius={wheel.radius}
+              theta={multiplyByPi(index)}
+              isLoaded={true}
+            />
+          );
+        })}
     </div>
   );
 }
