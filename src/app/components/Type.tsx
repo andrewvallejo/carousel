@@ -6,39 +6,30 @@ import { getCoordinates, getRem } from "utility";
 import styles from "./Type.module.scss";
 
 interface TypeProps {
-  /** Indi */
-  isLoaded: boolean;
-  /** The type of the item */
   type: string;
-  /** The center coordinates of the wheel */
   center: { x: number; y: number };
-  /** The radius of the wheel */
   radius: number;
-  /** The current angle of the item in the wheel */
   theta: number;
+  isSelected: boolean;
 }
-
-const initialPosition = { left: "0rem", top: "0rem" };
-
-/** Type component represents a single item in the wheel  */
-export function Type({ type, center, radius, theta, isLoaded }: TypeProps) {
-  const [position, setPosition] = useState(initialPosition);
+export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
+  $: console.log("isSelected", isSelected);
+  const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   useEffect(() => {
     const { x, y } = getCoordinates(theta, radius);
     const left = getRem(center.x + x);
-    const top = getRem(center.y + y);
+    const top = getRem(center.y - y); // Notice the subtraction here
     setPosition({ left, top });
   }, [center, radius, theta]);
 
-  const rotation = -theta;
-
   return (
     <div
-      className={styles.type}
+      className={`${styles.type} ${isSelected ? styles.isSelected : ""}`}
       style={{
-        ...position,
-        transform: `translate(${position.x}px, ${position.y}px) rotate(${rotation}rad)`,
+        left: position.left,
+        top: position.top,
+        transform: `translate(-50%, -50%)`,
       }}
     >
       <Image

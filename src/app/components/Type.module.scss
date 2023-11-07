@@ -11,3 +11,7 @@
   transform: translate(-50%, -50%);
   font-size: clamp(0.5rem, 0.5vw, 1rem);
 }
+
+.isSelected {
+  border: 10px solid pink; // add your desired styles for the selected type
+}
