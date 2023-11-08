@@ -13,7 +13,6 @@ interface TypeProps {
   isSelected: boolean;
 }
 export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
-  $: console.log("isSelected", isSelected);
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   useEffect(() => {
