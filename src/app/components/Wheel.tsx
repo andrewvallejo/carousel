@@ -18,7 +18,7 @@ export function Wheel() {
   useEffect(() => {
     if (!wheelRef.current) return;
     const { width, height } = wheelRef.current.getBoundingClientRect();
-    const radius = Math.min(width, height) / 2;
+    const radius = Math.min(380) / 2;
     const center = { x: width / 2, y: height / 2 };
     setWheel((prevWheel: IWheel) => ({
       ...prevWheel,

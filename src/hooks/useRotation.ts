@@ -3,12 +3,17 @@ import { useEffect, useState, useCallback } from "react";
 import { useScroll } from "hooks";
 
 interface useRotationProps {
+  /** A Ref object for the wheel element */
   wheelRef: React.RefObject<HTMLDivElement>;
+  /** An array of string types */
   types: string[];
 }
 
+/** The return type of the useRotation hook */
 interface useRotationReturn {
+  /** The current state of the wheel */
   wheel: IWheel;
+  /** A function to update the state of the wheel */
   setWheel: React.Dispatch<React.SetStateAction<IWheel>>;
 }
 

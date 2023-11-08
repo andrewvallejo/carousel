@@ -12,13 +12,14 @@ interface TypeProps {
   theta: number;
   isSelected?: boolean;
 }
+
 export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   useEffect(() => {
     const { x, y } = getCoordinates(theta, radius);
     const left = getRem(center.x + x);
-    const top = getRem(center.y - y); // Notice the subtraction here
+    const top = getRem(center.y - y);
     setPosition({ left, top });
   }, [center, radius, theta]);
 
