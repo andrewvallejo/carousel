@@ -2,27 +2,27 @@ import { useEffect, useState, useCallback } from "react";
 
 import useScroll from "./useScroll";
 
-const initialWheelState = {
+interface initialWheelState {
   /** The radius of the wheel */
-  radius: 360,
+  radius: number;
   /** The x and y coordinates at the center of the wheel */
   center: {
     /** The x Coordinate at the center of the wheel */
-    x: 0,
+    x: number;
     /** The y Coordinate at the center of the wheel */
-    y: 0,
-  },
+    y: number;
+  };
   /** The rotational angle of the wheel with respect to its initial position */
-  theta: 0,
+  theta: number;
   /** The ID value of the scheduled animation, `null` if not scheduled */
-  animationId: null,
+  animationId: null;
   /** The amount of degrees the wheel has been rotated */
-  rotation: 0,
+  rotation: number;
   /** Temporary value for `theta` used while calculating rotation */
-  tempTheta: 0,
-};
+  tempTheta: number;
+}
 
-const initialWheelState = {
+const initialWheelState: initialWheelState = {
   radius: 360,
   center: { x: 0, y: 0 },
   theta: 0,
