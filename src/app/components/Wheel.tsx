@@ -8,7 +8,7 @@ import { useRotation } from "../../hooks/useRotation";
 
 export function Wheel() {
   const [loaded, setLoaded] = useState(false);
-  const wheelRef = useRef(null);
+  const wheelRef = useRef<HTMLDivElement>(null);
   const { wheel, setWheel } = useRotation(wheelRef, pokemonTypes);
 
   useEffect(() => {
