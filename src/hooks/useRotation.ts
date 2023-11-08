@@ -1,8 +1,18 @@
 import { useEffect, useState, useCallback } from "react";
 
-import useScroll from "./useScroll";
+import { useScroll } from "hooks";
 
-interface initialWheelState {
+interface useRotationProps {
+  wheelRef: React.RefObject<HTMLDivElement>;
+  types: string[];
+}
+
+interface useRotationReturn {
+  wheel: IWheel;
+  setWheel: React.Dispatch<React.SetStateAction<IWheel>>;
+}
+
+export interface IWheel {
   /** The radius of the wheel */
   radius: number;
   /** The x and y coordinates at the center of the wheel */
@@ -15,14 +25,14 @@ interface initialWheelState {
   /** The rotational angle of the wheel with respect to its initial position */
   theta: number;
   /** The ID value of the scheduled animation, `null` if not scheduled */
-  animationId: null;
+  animationId: NodeJS.Timeout | null;
   /** The amount of degrees the wheel has been rotated */
   rotation: number;
   /** Temporary value for `theta` used while calculating rotation */
   tempTheta: number;
 }
 
-const initialWheelState: initialWheelState = {
+const initialWheelState: IWheel = {
   radius: 360,
   center: { x: 0, y: 0 },
   theta: 0,
@@ -31,12 +41,15 @@ const initialWheelState: initialWheelState = {
   tempTheta: 0,
 };
 
-export function useRotation(wheelRef, types) {
-  const [wheel, setWheel] = useState(initialWheelState);
+export function useRotation({ wheelRef, types }: useRotationProps) {
+  const [wheel, setWheel] = useState<IWheel>(initialWheelState);
 
   const handleRotate = useCallback(
-    (delta) => {
-      clearTimeout(wheel.animationId);
+    (delta: number) => {
+      if (wheel.animationId !== null) {
+        clearTimeout(wheel.animationId);
+      }
+
       const rotateSpeed = delta;
 
       let tempTheta =
@@ -47,7 +60,9 @@ export function useRotation(wheelRef, types) {
           "transform",
           `rotate(${tempTheta}deg)`
         );
-        Array.from(wheelRef.current.children).forEach((child) => {
+        Array.from(
+          wheelRef.current.children as HTMLCollectionOf<HTMLElement>
+        ).forEach((child: HTMLElement) => {
           child.style.setProperty(
             "transform",
             `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`
@@ -55,10 +70,14 @@ export function useRotation(wheelRef, types) {
         });
       }
       const animationId = setTimeout(() => {
-        setWheel((prevWheel) => ({ ...prevWheel, theta: tempTheta }));
+        setWheel((prevWheel: IWheel) => ({ ...prevWheel, theta: tempTheta }));
       }, 150);
 
-      setWheel((prevWheel) => ({ ...prevWheel, animationId, tempTheta }));
+      setWheel((prevWheel: IWheel) => ({
+        ...prevWheel,
+        animationId,
+        tempTheta,
+      }));
     },
     [wheel.animationId, wheel.tempTheta, wheelRef]
   );
@@ -66,12 +85,12 @@ export function useRotation(wheelRef, types) {
   useScroll(handleRotate);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       const rotate = { right: 20, left: -20 };
 
-      if (e.key === "ArrowRight") {
+      if (event.key === "ArrowRight") {
         handleRotate(rotate.right);
-      } else if (e.key === "ArrowLeft") {
+      } else if (event.key === "ArrowLeft") {
         handleRotate(rotate.left);
       }
     };

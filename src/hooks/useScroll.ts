@@ -12,7 +12,8 @@ type ScrollHandler = (value: number) => void;
  * @param {ScrollHandler} func Function to be called upon scroll. It is passed a number indicating scroll direction (-20 or 20).
  * @param {number} [throttleTime=200] The minimum wait time in milliseconds between each function execution.
  */
-const useScroll = (func: ScrollHandler, throttleTime: number = 200) => {
+
+export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
   const lastEventTimeRef = useRef(0);
 
   /**
@@ -41,6 +42,4 @@ const useScroll = (func: ScrollHandler, throttleTime: number = 200) => {
       window.removeEventListener("wheel", handleScroll as any);
     };
   }, [handleScroll]);
-};
-
-export default useScroll;
+}

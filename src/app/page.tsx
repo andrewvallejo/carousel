@@ -1,6 +1,7 @@
 "use client";
-import styles from "./page.module.scss";
 import { Wheel } from "components";
+
+import styles from "./page.module.scss";
 
 export default function Home() {
   return (
