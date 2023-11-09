@@ -47,7 +47,7 @@ export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
 
       if (Math.abs(diffX) > 50) {
         const rotateDegree = 20;
-        const direction = diffX > 0 ? -1 : 1; // Change the direction based on the swipe direction
+        const direction = diffX > 0 ? -1 : 1;
         func(direction * rotateDegree);
         touchStartRef.current = touchEnd;
       }
