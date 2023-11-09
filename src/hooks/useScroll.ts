@@ -15,14 +15,8 @@ type ScrollHandler = (value: number) => void;
 
 export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
   const lastEventTimeRef = useRef(0);
+  const touchStartRef = useRef({ x: 0, y: 0 });
 
-  /**
-   * handleScroll is a callback function that gets called upon scrolling.
-   * It calculates the rotation degree based on the scroll direction and executes the provided function.
-   * It also updates the reference time for throttling events.
-   *
-   * @param {React.WheelEvent} event The native DOM scroll event
-   */
   const handleScroll = useCallback(
     (event: React.WheelEvent) => {
       const currentTime = new Date().getTime();
@@ -36,10 +30,39 @@ export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
     [func, throttleTime]
   );
 
+  const handleTouchStart = useCallback((event: TouchEvent) => {
+    touchStartRef.current = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
+  }, []);
+
+  const handleTouchMove = useCallback(
+    (event: TouchEvent) => {
+      const touchEnd = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
+      };
+      const diffX = touchStartRef.current.x - touchEnd.x;
+
+      if (Math.abs(diffX) > 50) {
+        const rotateDegree = 20;
+        const direction = diffX > 0 ? -1 : 1; // Change the direction based on the swipe direction
+        func(direction * rotateDegree);
+        touchStartRef.current = touchEnd;
+      }
+    },
+    [func]
+  );
+
   useEffect(() => {
     window.addEventListener("wheel", handleScroll as any);
+    window.addEventListener("touchstart", handleTouchStart as any);
+    window.addEventListener("touchmove", handleTouchMove as any);
     return () => {
       window.removeEventListener("wheel", handleScroll as any);
+      window.removeEventListener("touchstart", handleTouchStart as any);
+      window.removeEventListener("touchmove", handleTouchMove as any);
     };
-  }, [handleScroll]);
+  }, [handleScroll, handleTouchStart, handleTouchMove]);
 }

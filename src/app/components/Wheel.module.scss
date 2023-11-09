@@ -1,6 +1,7 @@
 @import "styles";
 
 .wheel {
+  touch-action: none;
   --rotate-deg: 0;
   width: 18.75rem;
   height: 18.75rem;
