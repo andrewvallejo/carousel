@@ -12,6 +12,7 @@ import styles from "./Wheel.module.scss";
 
 export function Wheel() {
   const [loaded, setLoaded] = useState(false);
+
   const wheelRef = useRef<HTMLDivElement>(null);
   const { wheel, setWheel } = useRotation({ wheelRef, types: pokemonTypes });
 
@@ -20,10 +21,12 @@ export function Wheel() {
     const { width, height } = wheelRef.current.getBoundingClientRect();
     const radius = Math.min(380) / 2;
     const center = { x: width / 2, y: height / 2 };
+    const theta = 10; // set initial theta to 10 degrees
     setWheel((prevWheel: IWheel) => ({
       ...prevWheel,
       center,
       radius,
+      theta,
     }));
     setLoaded(true);
   }, [setWheel, wheelRef]);

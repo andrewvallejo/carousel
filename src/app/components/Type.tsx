@@ -11,9 +11,19 @@ interface TypeProps {
   radius: number;
   theta: number;
   isSelected?: boolean;
+  index: number;
+  rotation: number;
 }
 
-export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
+export function Type({
+  type,
+  center,
+  radius,
+  theta,
+  index,
+  rotation,
+  isSelected,
+}: TypeProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   useEffect(() => {
@@ -29,7 +39,7 @@ export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
       style={{
         left: position.left,
         top: position.top,
-        transform: `translate(-50%, -50%)`,
+        transform: `translate(-50%, -50%) rotate(${-10}deg)`,
       }}
     >
       <Image

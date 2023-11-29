@@ -90,6 +90,15 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
   useScroll(handleRotate);
 
   useEffect(() => {
+    if (wheelRef.current) {
+      wheelRef.current.style.setProperty(
+        "transform",
+        `rotate(${wheel.theta}deg)`,
+      );
+    }
+  }, [wheel.theta, wheelRef]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const rotate = { right: 20, left: -20 };
 
