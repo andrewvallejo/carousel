@@ -14,8 +14,5 @@
 }
 
 .isSelected {
-  box-shadow: 0 0 20px 1px gold;
-  width: 4rem;
-  height: 4rem;
-  transition: box-shadow 0.3s ease-in-out;
+  border: 10px solid pink; // add your desired styles for the selected type
 }

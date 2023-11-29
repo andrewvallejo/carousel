@@ -16,24 +16,20 @@ interface TypeProps {
 export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
-  const { left, top } = position;
-
   useEffect(() => {
     const { x, y } = getCoordinates(theta, radius);
-
-    setPosition({
-      left: getRem(center.x + x),
-      top: getRem(center.y - y),
-    });
+    const left = getRem(center.x + x);
+    const top = getRem(center.y - y);
+    setPosition({ left, top });
   }, [center, radius, theta]);
 
   return (
     <div
       className={`${styles.type} ${isSelected ? styles.isSelected : ""}`}
       style={{
-        left,
-        top,
-        transform: `translate(-50%, -50%) rotate(${-10}deg)`,
+        left: position.left,
+        top: position.top,
+        transform: `translate(-50%, -50%)`,
       }}
     >
       <Image
