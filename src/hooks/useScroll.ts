@@ -27,7 +27,7 @@ export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
         lastEventTimeRef.current = currentTime;
       }
     },
-    [func, throttleTime]
+    [func, throttleTime],
   );
 
   const handleTouchStart = useCallback((event: TouchEvent) => {
@@ -52,7 +52,7 @@ export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
         touchStartRef.current = touchEnd;
       }
     },
-    [func]
+    [func],
   );
 
   useEffect(() => {

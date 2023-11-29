@@ -63,14 +63,14 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
       if (wheelRef.current) {
         wheelRef.current.style.setProperty(
           "transform",
-          `rotate(${tempTheta}deg)`
+          `rotate(${tempTheta}deg)`,
         );
         Array.from(
-          wheelRef.current.children as HTMLCollectionOf<HTMLElement>
+          wheelRef.current.children as HTMLCollectionOf<HTMLElement>,
         ).forEach((child: HTMLElement) => {
           child.style.setProperty(
             "transform",
-            `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`
+            `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`,
           );
         });
       }
@@ -84,7 +84,7 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
         tempTheta,
       }));
     },
-    [wheel.animationId, wheel.tempTheta, wheelRef]
+    [wheel.animationId, wheel.tempTheta, wheelRef],
   );
 
   useScroll(handleRotate);
