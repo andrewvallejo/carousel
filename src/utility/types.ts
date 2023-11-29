@@ -24,7 +24,9 @@ export const getAdjacentType = (
   direction: "next" | "previous",
 ) => {
   const currentIndex = pokemonTypes.indexOf(currentType);
-  let adjacentIndex;
+
+  let adjacentIndex = 0;
+
   if (direction === "next") {
     adjacentIndex = (currentIndex + 1) % pokemonTypes.length;
   } else if (direction === "previous") {
@@ -33,5 +35,6 @@ export const getAdjacentType = (
       adjacentIndex = pokemonTypes.length - 1;
     }
   }
+
   return pokemonTypes[adjacentIndex];
 };

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 
 import { useScroll } from "hooks";
-import { getClosestType, getNextType, getAdjacentType } from "../utility/types";
+import { getAdjacentType } from "../utility/types";
 
 interface useRotationProps {
   /** A Ref object for the wheel element */

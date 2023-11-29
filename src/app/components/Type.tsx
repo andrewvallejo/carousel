@@ -11,19 +11,9 @@ interface TypeProps {
   radius: number;
   theta: number;
   isSelected?: boolean;
-  index: number;
-  rotation: number;
 }
 
-export function Type({
-  type,
-  center,
-  radius,
-  theta,
-  index,
-  rotation,
-  isSelected,
-}: TypeProps) {
+export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
   $: console.log(
     "isSelected",
     JSON.stringify(isSelected === true && "PASSSED"),
