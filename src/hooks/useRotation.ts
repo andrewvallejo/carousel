@@ -50,7 +50,6 @@ const initialWheelState: IWheel = {
 export function useRotation({ wheelRef, types }: useRotationProps) {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
   const [selectedType, setSelectedType] = useState(types[5]);
-  $: console.log("selectedType", JSON.stringify(selectedType, null, 2));
 
   const handleRotate = useCallback(
     (delta: number) => {
@@ -124,5 +123,5 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
     };
   }, [handleRotate]);
 
-  return { wheel, setWheel };
+  return { wheel, setWheel, selectedType };
 }

@@ -24,6 +24,10 @@ export function Type({
   rotation,
   isSelected,
 }: TypeProps) {
+  $: console.log(
+    "isSelected",
+    JSON.stringify(isSelected === true && "PASSSED"),
+  );
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   useEffect(() => {

@@ -14,7 +14,10 @@ export function Wheel() {
   const [loaded, setLoaded] = useState(false);
 
   const wheelRef = useRef<HTMLDivElement>(null);
-  const { wheel, setWheel } = useRotation({ wheelRef, types: pokemonTypes });
+  const { selectedType, wheel, setWheel } = useRotation({
+    wheelRef,
+    types: pokemonTypes,
+  });
 
   useEffect(() => {
     if (!wheelRef.current) return;
@@ -42,6 +45,7 @@ export function Wheel() {
               center={wheel.center}
               radius={wheel.radius}
               theta={multiplyByPi(index)}
+              isSelected={selectedType === pokemonTypes[index]}
             />
           );
         })}
