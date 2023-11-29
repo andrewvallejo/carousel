@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 
 import { useScroll } from "hooks";
+import { getClosestType, getNextType, getAdjacentType } from "../utility/types";
 
 interface useRotationProps {
   /** A Ref object for the wheel element */
@@ -48,12 +49,18 @@ const initialWheelState: IWheel = {
 
 export function useRotation({ wheelRef, types }: useRotationProps) {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
+  const [selectedType, setSelectedType] = useState(types[5]);
+  $: console.log("selectedType", JSON.stringify(selectedType, null, 2));
 
   const handleRotate = useCallback(
     (delta: number) => {
       if (wheel.animationId !== null) {
         clearTimeout(wheel.animationId);
       }
+
+      const direction = delta > 0 ? "next" : "previous";
+      const newType = getAdjacentType(selectedType, direction);
+      setSelectedType(newType);
 
       const rotateSpeed = delta;
 
@@ -74,6 +81,7 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
           );
         });
       }
+
       const animationId = setTimeout(() => {
         setWheel((prevWheel: IWheel) => ({ ...prevWheel, theta: tempTheta }));
       }, 150);
@@ -84,7 +92,7 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
         tempTheta,
       }));
     },
-    [wheel.animationId, wheel.tempTheta, wheelRef],
+    [selectedType, wheel.animationId, wheel.tempTheta, wheelRef],
   );
 
   useScroll(handleRotate);
