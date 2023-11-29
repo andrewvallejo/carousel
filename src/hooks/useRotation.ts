@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { getAdjacentType } from "utility";
 import { useScroll } from "hooks";
-import { getAdjacentType } from "../utility/types";
 
 interface useRotationProps {
   /** A Ref object for the wheel element */
@@ -10,32 +10,13 @@ interface useRotationProps {
   types: string[];
 }
 
-/** The return type of the useRotation hook */
 interface useRotationReturn {
+  /** The type currently selected; defaulted to "fighting" */
+  selectedType: string;
   /** The current state of the wheel */
   wheel: IWheel;
   /** A function to update the state of the wheel */
   setWheel: React.Dispatch<React.SetStateAction<IWheel>>;
-}
-
-export interface IWheel {
-  /** The radius of the wheel */
-  radius: number;
-  /** The x and y coordinates at the center of the wheel */
-  center: {
-    /** The x Coordinate at the center of the wheel */
-    x: number;
-    /** The y Coordinate at the center of the wheel */
-    y: number;
-  };
-  /** The rotational angle of the wheel with respect to its initial position */
-  theta: number;
-  /** The ID value of the scheduled animation, `null` if not scheduled */
-  animationId: NodeJS.Timeout | null;
-  /** The amount of degrees the wheel has been rotated */
-  rotation: number;
-  /** Temporary value for `theta` used while calculating rotation */
-  tempTheta: number;
 }
 
 const initialWheelState: IWheel = {
@@ -47,9 +28,22 @@ const initialWheelState: IWheel = {
   tempTheta: 0,
 };
 
-export function useRotation({ wheelRef, types }: useRotationProps) {
+const intitialType = "fighting";
+
+/**
+ * This hook provides a wheel object to manage its properties, it updates the wheel based on scroll events,
+ * and syncs those changes with the CSS properties. It also returns the currently selected type, which is
+ * determined by the wheel's rotation.
+ *
+ * @param {useRotationProps} props - The properties passed to the hook
+ * @returns {useRotationReturn} The wheel object, a setWheel function to update the rotation, and the currently selected type
+ */
+export function useRotation({
+  wheelRef,
+  types,
+}: useRotationProps): useRotationReturn {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
-  const [selectedType, setSelectedType] = useState(types[5]);
+  const [selectedType, setSelectedType] = useState(intitialType);
 
   const handleRotate = useCallback(
     (delta: number) => {
@@ -82,14 +76,13 @@ export function useRotation({ wheelRef, types }: useRotationProps) {
       }
 
       const animationId = setTimeout(() => {
-        setWheel((prevWheel: IWheel) => ({ ...prevWheel, theta: tempTheta }));
+        setWheel((prevWheel: IWheel) => ({
+          ...prevWheel,
+          theta: tempTheta,
+          animationId,
+          tempTheta,
+        }));
       }, 150);
-
-      setWheel((prevWheel: IWheel) => ({
-        ...prevWheel,
-        animationId,
-        tempTheta,
-      }));
     },
     [selectedType, wheel.animationId, wheel.tempTheta, wheelRef],
   );

@@ -1,12 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 
 /**
- * ScrollHandler is a function type that will be invoked on scroll events.
- * It accepts a number which will either be 20 or -20 based on the scroll direction.
- */
-type ScrollHandler = (value: number) => void;
-
-/**
  * useScroll is a custom React hook that triggers a function when a user scrolls.
  *
  * @param {ScrollHandler} func Function to be called upon scroll. It is passed a number indicating scroll direction (-20 or 20).
