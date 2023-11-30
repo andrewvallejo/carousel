@@ -11,6 +11,11 @@
   transform: translate(-50%, -50%);
   font-size: clamp(0.5rem, 0.5vw, 1rem);
   transition: transform 0.3s ease-in-out;
+
+  @media (max-width: 480px) {
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 .isSelected {
@@ -18,4 +23,9 @@
   width: 4rem;
   height: 4rem;
   transition: box-shadow 0.3s ease-in-out;
+
+  @media (max-width: 480px) {
+    width: 3rem;
+    height: 3rem;
+  }
 }

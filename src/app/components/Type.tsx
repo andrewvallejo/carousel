@@ -16,6 +16,11 @@ interface TypeProps {
 export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
+  let imageSize = 64;
+  if (typeof window !== "undefined" && window.innerWidth <= 480) {
+    imageSize = 48; // Adjust this value as needed
+  }
+
   useEffect(() => {
     const { x, y } = getCoordinates(theta, radius);
 
@@ -37,8 +42,8 @@ export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
         priority
         src={`/types/${type}.png`}
         alt={type}
-        width={64}
-        height={64}
+        width={imageSize}
+        height={imageSize}
       />
     </div>
   );
