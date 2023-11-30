@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 
-import { getAdjacentType } from "utility";
+import { getAdjacentType, debounce } from "utility";
 import { useScroll } from "hooks";
 
 interface useRotationProps {
@@ -28,52 +28,58 @@ const initialWheelState: IWheel = {
   tempTheta: 0,
 };
 
-const intitialType = "fighting";
+const initialType = "fighting"; // Fix the typo
 
-/**
- * This hook provides a wheel object to manage its properties, it updates the wheel based on scroll events,
- * and syncs those changes with the CSS properties. It also returns the currently selected type, which is
- * determined by the wheel's rotation.
- *
- * @param {useRotationProps} props - The properties passed to the hook
- * @returns {useRotationReturn} The wheel object, a setWheel function to update the rotation, and the currently selected type
- */
 export function useRotation({
   wheelRef,
   types,
 }: useRotationProps): useRotationReturn {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
-  const [selectedType, setSelectedType] = useState(intitialType);
+  const [selectedType, setSelectedType] = useState(initialType);
+  const [isRotating, setIsRotating] = useState(false);
+
+  const wheelStateRef = useRef(wheel);
+  wheelStateRef.current = wheel;
+
+  const selectedTypeRef = useRef(selectedType);
+  selectedTypeRef.current = selectedType;
+
+  const debouncedRotate = debounce((tempTheta: number) => {
+    if (wheelRef.current) {
+      wheelRef.current.style.setProperty(
+        "transform",
+        `rotate(${tempTheta}deg)`,
+      );
+      Array.from(
+        wheelRef.current.children as HTMLCollectionOf<HTMLElement>,
+      ).forEach((child: HTMLElement) => {
+        child.style.setProperty(
+          "transform",
+          `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`,
+        );
+      });
+      setIsRotating(false);
+    }
+  }, 300);
 
   const handleRotate = useCallback(
     (delta: number) => {
-      if (wheel.animationId !== null) {
-        clearTimeout(wheel.animationId);
-      }
+      if (isRotating) return;
+
+      setIsRotating(true);
 
       const direction = delta > 0 ? "next" : "previous";
-      const newType = getAdjacentType(selectedType, direction);
+      const newType = getAdjacentType(selectedTypeRef.current, direction);
       setSelectedType(newType);
 
       const rotateSpeed = delta;
 
       let tempTheta =
-        Math.round((wheel.tempTheta + rotateSpeed + 10) / 20) * 20 - 10;
+        Math.round((wheelStateRef.current.tempTheta + rotateSpeed + 10) / 20) *
+          20 -
+        10;
 
-      if (wheelRef.current) {
-        wheelRef.current.style.setProperty(
-          "transform",
-          `rotate(${tempTheta}deg)`,
-        );
-        Array.from(
-          wheelRef.current.children as HTMLCollectionOf<HTMLElement>,
-        ).forEach((child: HTMLElement) => {
-          child.style.setProperty(
-            "transform",
-            `translate(-50%, -50%) rotate(${-1.0 * tempTheta}deg)`,
-          );
-        });
-      }
+      debouncedRotate(tempTheta);
 
       const animationId = setTimeout(() => {
         setWheel((prevWheel: IWheel) => ({
@@ -84,7 +90,7 @@ export function useRotation({
         }));
       }, 150);
     },
-    [selectedType, wheel.animationId, wheel.tempTheta, wheelRef],
+    [selectedTypeRef, wheelStateRef, debouncedRotate, isRotating],
   );
 
   useScroll(handleRotate);
