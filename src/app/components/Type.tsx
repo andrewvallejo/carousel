@@ -16,8 +16,6 @@ interface TypeProps {
 export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
-  const { left, top } = position;
-
   useEffect(() => {
     const { x, y } = getCoordinates(theta, radius);
 
@@ -31,8 +29,7 @@ export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
     <div
       className={`${styles.type} ${isSelected ? styles.isSelected : ""}`}
       style={{
-        left,
-        top,
+        ...position,
         transform: `translate(-50%, -50%) rotate(${-10}deg)`,
       }}
     >
