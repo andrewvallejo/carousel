@@ -4,13 +4,18 @@ import { getAdjacentType, debounce } from "utility";
 import { useScroll } from "hooks";
 
 interface useRotationProps {
+  /** A Ref object for the wheel element */
   wheelRef: React.RefObject<HTMLDivElement>;
+  /** An array of string types */
   types: string[];
 }
 
 interface useRotationReturn {
+  /** The type currently selected; defaulted to "fighting" */
   selectedType: string;
+  /** The current state of the wheel */
   wheel: IWheel;
+  /** A function to update the state of the wheel */
   setWheel: React.Dispatch<React.SetStateAction<IWheel>>;
 }
 
