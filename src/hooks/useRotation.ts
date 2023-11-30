@@ -1,23 +1,15 @@
-import { useCallback, useEffect, useState, useRef, useMemo } from "react";
-
+import { useCallback, useEffect, useState, useRef } from "react";
 import { getAdjacentType, debounce } from "utility";
-
 import { useScroll } from "hooks";
-import { throttle } from "../utility/debounce";
 
 interface useRotationProps {
-  /** A Ref object for the wheel element */
   wheelRef: React.RefObject<HTMLDivElement>;
-  /** An array of string types */
   types: string[];
 }
 
 interface useRotationReturn {
-  /** The type currently selected; defaulted to "fighting" */
   selectedType: string;
-  /** The current state of the wheel */
   wheel: IWheel;
-  /** A function to update the state of the wheel */
   setWheel: React.Dispatch<React.SetStateAction<IWheel>>;
 }
 
@@ -30,22 +22,14 @@ const initialWheelState: IWheel = {
   tempTheta: 0,
 };
 
-const intitialType = "fighting";
+const initialType = "fighting"; // Fix the typo
 
-/**
- * This hook provides a wheel object to manage its properties, it updates the wheel based on scroll events,
- * and syncs those changes with the CSS properties. It also returns the currently selected type, which is
- * determined by the wheel's rotation.
- *
- * @param {useRotationProps} props - The properties passed to the hook
- * @returns {useRotationReturn} The wheel object, a setWheel function to update the rotation, and the currently selected type
- */
 export function useRotation({
   wheelRef,
   types,
 }: useRotationProps): useRotationReturn {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
-  const [selectedType, setSelectedType] = useState(intitialType);
+  const [selectedType, setSelectedType] = useState(initialType);
   const [isRotating, setIsRotating] = useState(false);
 
   const wheelStateRef = useRef(wheel);
