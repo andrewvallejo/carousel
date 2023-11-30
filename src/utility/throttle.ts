@@ -6,12 +6,11 @@
  */
 export const throttle = (func: (...args: any[]) => void, limit: number) => {
   let inThrottle: boolean;
-  return function () {
-    /**
-     * Calls the provided function if not currently in the throttling period.
-     * Sets a timeout to exit the throttling period after the specified limit.
-     */
-    const args = arguments;
+  /**
+   * Calls the provided function if not currently in the throttling period.
+   * Sets a timeout to exit the throttling period after the specified limit.
+   */
+  return (...args: any[]) => {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
