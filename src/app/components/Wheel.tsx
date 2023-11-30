@@ -21,7 +21,11 @@ export const Wheel = () => {
 
     const { width, height } = wheelRef.current.getBoundingClientRect();
 
-    const radius = 380 / 2;
+    let radius = 380 / 2;
+    if (window.innerWidth <= 480) {
+      radius = 300 / 2; // Adjust this value as needed
+    }
+
     const center = { x: width / 2, y: height / 2 };
     const initialTheta = 10;
 
