@@ -7,3 +7,15 @@ export const debounce = (func: (...args: any[]) => void, delay: number) => {
     timeoutId = setTimeout(() => func(...args), delay);
   };
 };
+
+export const throttle = (func: (...args: any[]) => void, limit: number) => {
+  let inThrottle: boolean;
+  return function () {
+    const args = arguments;
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
