@@ -1,6 +1,6 @@
 @import "styles";
 
-.type {
+.type-selection {
   @include flex;
   width: 4rem;
   height: 4rem;
@@ -10,7 +10,7 @@
   text-align: center;
   transform: translate(-50%, -50%);
   font-size: clamp(0.5rem, 0.5vw, 1rem);
-  transition: transform 0.3s ease-in-out;
+  transition: transition 0.5s linear;
 
   @media (max-width: 480px) {
     width: 3rem;
@@ -22,7 +22,7 @@
   box-shadow: 0 0 20px 1px gold;
   width: 4rem;
   height: 4rem;
-  transition: box-shadow 0.3s ease-in-out;
+  transition: all 0.5s linear;
 
   @media (max-width: 480px) {
     width: 3rem;

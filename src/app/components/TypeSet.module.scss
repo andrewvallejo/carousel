@@ -1,0 +1,13 @@
+.type-set {
+  display: grid;
+  grid-template-columns: repeat(1fr, 1fr);
+  justify-content: space-around;
+  padding: 1rem;
+  gap: 1rem;
+  border: 1px solid gray;
+  width: 20rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,18 @@
+@import "styles";
+
+.type-wheel {
+  position: relative;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 50%;
+
+  &_inner {
+    position: absolute;
+    inset: 0;
+    --rotate-deg: 0;
+    touch-action: none;
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    transform: rotate(var(--rotate-deg, 0deg));
+  }
+}

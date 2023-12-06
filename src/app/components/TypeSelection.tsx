@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+// Pacakages
 import Image from "next/image";
+import { useEffect, useState } from "react";
+// Utility
+import { getCoordinates, getRem } from "utility/math";
+// Styles
+import styles from "./TypeSelection.module.scss";
 
-import { getCoordinates, getRem } from "utility";
-
-import styles from "./Type.module.scss";
-
-interface TypeProps {
+interface TypeSelectionProps {
   type: string;
   center: { x: number; y: number };
   radius: number;
@@ -13,12 +14,18 @@ interface TypeProps {
   isSelected?: boolean;
 }
 
-export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
+export function TypeSelection({
+  type,
+  center,
+  radius,
+  theta,
+  isSelected,
+}: TypeSelectionProps) {
   const [position, setPosition] = useState({ left: "0%", top: "0%" });
 
   let imageSize = 64;
   if (typeof window !== "undefined" && window.innerWidth <= 480) {
-    imageSize = 48; // Adjust this value as needed
+    imageSize = 48;
   }
 
   useEffect(() => {
@@ -32,7 +39,9 @@ export function Type({ type, center, radius, theta, isSelected }: TypeProps) {
 
   return (
     <div
-      className={`${styles.type} ${isSelected ? styles.isSelected : ""}`}
+      className={`${styles["type-selection"]} ${
+        isSelected ? styles.isSelected : ""
+      }`}
       style={{
         ...position,
         transform: `translate(-50%, -50%) rotate(${-10}deg)`,
