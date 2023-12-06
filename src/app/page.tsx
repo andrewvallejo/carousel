@@ -1,6 +1,6 @@
 "use client";
 //Packages
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //Components
 import { TypeSet } from "components/TypeSet";
 import { TypeWheel } from "components/TypeWheel";
@@ -21,6 +21,18 @@ window.dispatchEvent(new Event("resize"));
 export default function Home() {
   // TODO: create a global context for type selections
   const [selectedType, setSelectedType] = useState<PokemonType>(initialType);
+
+  useEffect(() => {
+    const handleResize = () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <main className={styles.main}>
