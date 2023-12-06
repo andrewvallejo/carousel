@@ -13,16 +13,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
+    "baseUrl": "./",
     "paths": {
-      "components": ["./src/app/components/index.ts"],
+      "components/*": ["./src/app/components/*"],
+      "hooks/*": ["./src/hooks/*"],
       "styles": ["./src/app/styles.scss"],
-      "utility": ["./src/utility/index.ts"],
-      "hooks": ["./src/hooks/index.ts"]
+      "utility/*": ["./src/utility/*"]
     },
     "forceConsistentCasingInFileNames": true
   },
