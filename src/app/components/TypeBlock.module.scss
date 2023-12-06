@@ -1,5 +1,4 @@
 @import "styles";
-
 .type-block {
   --color: gray;
   display: flex;
@@ -17,6 +16,7 @@
   h2,
   h3 {
     all: unset;
+    font-size: 1rem;
 
     @media (prefers-color-scheme: dark) {
       color: white;
@@ -26,18 +26,10 @@
   h2 {
     font-weight: 700;
     text-transform: capitalize;
-
-    @media (max-width: 480px) {
-      font-weight: 500;
-      font-size: 0.7rem;
-    }
   }
 
   h3 {
-    @media (max-width: 480px) {
-      font-size: 0.8rem;
-      font-weight: 900;
-    }
+    font-weight: 900;
   }
 
   .fadeIn,
@@ -54,7 +46,11 @@
   }
 
   @media (max-width: 480px) {
-    width: 6rem;
-    min-height: unset;
+    width: 4rem;
+    min-height: 2rem;
+    h2,
+    h3 {
+      font-size: clamp(0.7rem, 2vw, 1rem);
+    }
   }
 }

@@ -34,7 +34,7 @@ export default function Home() {
         setSelectedType={setSelectedType}
         selectedType={selectedType}
       />
-      <TypeSet types={typeSet.tenToEighteen} currentType={selectedType} />
+      <TypeSet types={typeSet.tenToEighteen} currentType={selectedType} flip />{" "}
     </main>
   );
 }
