@@ -3,7 +3,7 @@
 .type-wheel {
   --rotate-deg: 0;
 
-  &--container {
+  &__container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
     height: 22rem;
   }
 
-  &--inner {
+  &__inner {
     touch-action: none;
     border-radius: 50%;
     transform-origin: 50% 50%;
