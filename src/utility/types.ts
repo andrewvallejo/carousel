@@ -1,26 +1,28 @@
-export const pokemonTypes = [
-  "bug",
-  "dark",
-  "dragon",
-  "electric",
-  "fairy",
-  "fighting",
-  "fire",
-  "flying",
-  "ghost",
-  "grass",
-  "ground",
-  "ice",
-  "normal",
-  "poison",
-  "psychic",
-  "rock",
-  "steel",
-  "water",
-];
+// Utility
+import { pokemonTypes, pokemonTypeMatrix } from "utility/pokemonTypes";
+
+export const calculateEffectiveness = (
+  attackType: PokemonType,
+  defenceType: PokemonType,
+) => {
+  const typeEffectiveness = pokemonTypeMatrix[attackType]?.[defenceType];
+
+  if (typeEffectiveness !== undefined) {
+    return typeEffectiveness;
+  } else {
+    return 1;
+  }
+};
+
+export const calculateAllEffectiveness = (currentType: PokemonType) => {
+  return pokemonTypes.reduce((acc, type) => {
+    const effectiveness = calculateEffectiveness(currentType, type);
+    return { ...acc, [type]: effectiveness };
+  }, {});
+};
 
 export const getAdjacentType = (
-  currentType: string,
+  currentType: PokemonType,
   direction: "next" | "previous",
 ) => {
   const currentIndex = pokemonTypes.indexOf(currentType);
