@@ -55,6 +55,6 @@
 
   @media (max-width: 480px) {
     width: 6rem;
-    height: 2rem;
+    min-height: unset;
   }
 }
