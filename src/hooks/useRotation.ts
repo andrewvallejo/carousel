@@ -1,18 +1,23 @@
-import { useCallback, useEffect, useState, useRef } from "react";
-
-import { getAdjacentType, debounce } from "utility";
-import { useScroll } from "hooks";
+// Packages
+import { useCallback, useEffect, useRef, useState } from "react";
+// Hooks
+import { useScroll } from "hooks/useScroll";
+// Utility
+import { debounce } from "utility/debounce";
+import { getAdjacentType } from "utility/types";
 
 interface useRotationProps {
   /** A Ref object for the wheel element */
   wheelRef: React.RefObject<HTMLDivElement>;
   /** An array of string types */
   types: string[];
+  /** A function to set the selected type */
+  setSelectedType: (value: PokemonType) => void;
+  /** The currently selected type */
+  selectedType: PokemonType;
 }
 
 interface useRotationReturn {
-  /** The type currently selected; defaulted to "fighting" */
-  selectedType: string;
   /** The current state of the wheel */
   wheel: IWheel;
   /** A function to update the state of the wheel */
@@ -28,14 +33,12 @@ const initialWheelState: IWheel = {
   tempTheta: 0,
 };
 
-const initialType = "fighting"; // Fix the typo
-
 export function useRotation({
   wheelRef,
-  types,
+  setSelectedType,
+  selectedType,
 }: useRotationProps): useRotationReturn {
   const [wheel, setWheel] = useState<IWheel>(initialWheelState);
-  const [selectedType, setSelectedType] = useState(initialType);
   const [isRotating, setIsRotating] = useState(false);
 
   const wheelStateRef = useRef(wheel);
@@ -90,7 +93,7 @@ export function useRotation({
         }));
       }, 150);
     },
-    [selectedTypeRef, wheelStateRef, debouncedRotate, isRotating],
+    [debouncedRotate, isRotating, setSelectedType],
   );
 
   useScroll(handleRotate);
@@ -122,5 +125,5 @@ export function useRotation({
     };
   }, [handleRotate]);
 
-  return { wheel, setWheel, selectedType };
+  return { wheel, setWheel };
 }

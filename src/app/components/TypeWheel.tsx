@@ -52,8 +52,8 @@ export const TypeWheel = ({
   }, [setWheel, wheelRef]);
 
   return (
-    <div className={styles["type-wheel"]}>
-      <div ref={wheelRef} className={styles["type-wheel_inner"]}>
+    <div className={styles["type-wheel-container"]}>
+      <div ref={wheelRef} className={styles["type-wheel--inner"]}>
         {loaded &&
           pokemonTypes.map((type: string, index: number) => {
             return (
