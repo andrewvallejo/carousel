@@ -8,7 +8,8 @@ import { useEffect, useRef, useCallback } from "react";
  * @param {number} [throttleTime=200] The minimum wait time in milliseconds between each function execution.
  */
 
-export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
+export function useScroll(func: ScrollHandler, throttleTime: number = 1000) {
+  // Increase throttleTime to 500ms
   const lastEventTimeRef = useRef(0);
   const touchStartRef = useRef({ x: 0, y: 0 });
 
@@ -16,11 +17,16 @@ export function useScroll(func: ScrollHandler, throttleTime: number = 200) {
     (event: React.WheelEvent) => {
       const currentTime = new Date().getTime();
 
-      if (currentTime - lastEventTimeRef.current > throttleTime) {
-        const rotateDegree = 20;
-        func(Math.sign(event.deltaY) * rotateDegree);
-        lastEventTimeRef.current = currentTime;
+      // If the function was called less than throttleTime milliseconds ago, return
+      if (currentTime - lastEventTimeRef.current < throttleTime) {
+        return;
       }
+
+      const rotateDegree = 20;
+      func(Math.sign(event.deltaY) * rotateDegree);
+
+      // Update the last event time
+      lastEventTimeRef.current = currentTime;
     },
     [func, throttleTime],
   );
